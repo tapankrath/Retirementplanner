@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>RetirementPlanner — Retirement Plan — India</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0d1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RetirePlanner">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<style>
+:root{
+  --bg:      #0d1117;
+  --panel:   #111827;
+  --surf:    #161f35;
+  --surface: #161f35;
+  --surf2:   #1a2540;
+  --surf3:   #1e2b4a;
+  --surf4:   #222d50;
+  --border:  rgba(100,150,255,.10);
+  --border2: rgba(100,150,255,.16);
+  --ink:     #e4eef8;
+  --ink2:    #8aa8cc;
+  --text:    #e4eef8;
+  --label:   #8aa8cc;
+  --muted:   #4a6a8a;
+  --gold:    #e8b820;
+  --gold2:   #f5cf60;
+  --accent:  #4a80d4;
+  --blue:    #4a80d4;
+  --blue2:   #7aadee;
+  --green:   #2ecc8e;
+  --green2:  #1aaa70;
+  --red:     #e05050;
+  --purple:  #9b6ee8;
+  --saffron: #e07b00;
+  --saffron2:#f5a030;
+  --teal:    #18b8a0;
+  --hh:      62px;
+}
+
+/* ── Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{font-size:14px;height:100%;}
+body{
+  height:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Outfit',sans-serif;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ── iPhone safe area ── */
+.hdr{
+  flex-shrink:0;
+  height:calc(var(--hh) + env(safe-area-inset-top,0px));
+  padding-top:env(safe-area-inset-top,0px);
+  padding-left:max(20px,env(safe-area-inset-left,0px));
+  padding-right:max(20px,env(safe-area-inset-right,0px));
+  padding-bottom:0;
+  display:flex;
+  align-items:center;
+  background:linear-gradient(105deg,#050810,#0e1828 55%,#050a14);
+  border-bottom:1px solid rgba(100,150,255,.14);
+  position:relative;
+  overflow:visible;
+}
+
+/* ── Shell ── */
+.shell{
+  display:flex;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+}
+
+/* ── Sidebar ── */
+.sb{
+  width:330px;
+  flex-shrink:0;
+  background:var(--panel);
+  border-right:1px solid var(--border2);
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:10px 10px 40px;
+}
+.sbox{
+  background:var(--surf);
+  border:1px solid var(--border2);
+  border-radius:10px;
+  margin-bottom:8px;
+  overflow:hidden;
+}
+.sbox-hdr{
+  display:flex;align-items:center;gap:7px;
+  background:linear-gradient(90deg,var(--surf2),var(--surf));
+  border-bottom:1px solid var(--border);
+  padding:6px 11px;
+  font-size:8.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--gold);
+}
+.sbox-body{padding:10px 11px;}
+.sg{margin-bottom:9px;}.sg:last-child{margin-bottom:0;}
+.sg-r{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;}
+.sg-n{font-size:10.5px;color:var(--ink2);}
+.sg-v{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--gold);}
+.sg-v.g{color:var(--green);}.sg-v.s{color:var(--saffron);}.sg-v.b{color:var(--blue);}
+.sg-hint{font-size:8px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* ── Inputs ── */
+input[type=text],input[type=email],.ninp{
+  width:100%;background:var(--surf2);border:1px solid var(--border2);
+  border-radius:6px;padding:5px 9px;
+  font-family:'Outfit',sans-serif;font-size:11.5px;color:var(--ink);outline:none;
+}
+input[type=text]:focus,input[type=email]:focus,.ninp:focus{border-color:var(--gold);}
+input[type=range]{
+  -webkit-appearance:none;width:100%;height:4px;
+  background:var(--surf3);border-radius:2px;outline:none;cursor:pointer;border:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 0 3px rgba(232,184,32,.2),0 1px 4px rgba(0,0,0,.3);
+  transition:transform .12s;
+}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);}
+
+/* ── Toggle buttons ── */
+.m-row,.married-row{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--border);}
+.m-lbl,.married-label{font-size:11px;color:var(--ink2);font-weight:500;}
+.tw,.toggle-wrap{display:flex;}
+.tb,.toggle-btn{
+  padding:4px 12px;font-size:10.5px;font-weight:600;
+  font-family:'Outfit',sans-serif;
+  border:1px solid var(--border2);cursor:pointer;
+  background:var(--surf2);color:var(--muted);transition:all .15s;
+}
+.tb:first-child,.toggle-btn:first-child{border-radius:5px 0 0 5px;}
+.tb:last-child,.toggle-btn:last-child{border-radius:0 5px 5px 0;border-left:none;}
+.tb.on,.toggle-btn.on{background:var(--gold);border-color:var(--gold);color:#0d1117;}
+.hide-spouse .spouse-row{display:none;}
+
+/* ── Content area ── */
+.ct{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:9px 12px;gap:7px;}
+
+/* ── Dashboard cards ── */
+.dash{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;flex-shrink:0;}
+.dc{
+  background:var(--surf);border:1px solid var(--border);
+  border-radius:8px;padding:7px 10px;position:relative;overflow:hidden;
+}
+.dc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
+.dc .dl{font-size:7px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.dc .dv{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;line-height:1;}
+.dc .ds{font-size:7.5px;color:var(--muted);margin-top:2px;}
+.dc.gold .dv{color:var(--gold);} .dc.gold::after{background:linear-gradient(90deg,var(--gold),var(--gold2));}
+.dc.grn  .dv{color:var(--green);}.dc.grn::after{background:linear-gradient(90deg,var(--green2),var(--green));}
+.dc.blu  .dv{color:var(--blue);} .dc.blu::after{background:linear-gradient(90deg,#2c5aaa,var(--blue));}
+.dc.saf  .dv{color:var(--saffron2);}.dc.saf::after{background:linear-gradient(90deg,var(--saffron),var(--saffron2));}
+.dc.tel  .dv{color:var(--teal);}.dc.tel::after{background:linear-gradient(90deg,#0e8870,var(--teal));}
+.dc.red  .dv{color:var(--red);}.dc.red::after{background:linear-gradient(90deg,var(--red),#ff7070);}
+.dc.health{display:flex;flex-direction:column;justify-content:center;}
+.hc-row{display:flex;align-items:center;gap:7px;margin-top:3px;}
+.hc-icon{font-size:17px;}.hc-lbl{font-family:'Cormorant Garamond',serif;font-size:15px;}
+.hc-why{font-size:7px;color:var(--muted);margin-top:2px;line-height:1.3;}
+.hc-bar{height:2px;background:var(--surf3);border-radius:1px;overflow:hidden;margin-top:5px;}
+.hc-fill{height:100%;border-radius:1px;transition:width .4s;}
+.dc.h-good .hc-icon,.dc.h-good .hc-lbl{color:var(--green);}  .dc.h-good .hc-fill{background:var(--green);} .dc.h-good::after{background:linear-gradient(90deg,var(--green2),var(--green));}
+.dc.h-ok   .hc-icon,.dc.h-ok   .hc-lbl{color:var(--gold);}   .dc.h-ok   .hc-fill{background:var(--gold);} .dc.h-ok::after{background:linear-gradient(90deg,var(--gold),var(--gold2));}
+.dc.h-risk .hc-icon,.dc.h-risk .hc-lbl{color:var(--red);}    .dc.h-risk .hc-fill{background:var(--red);} .dc.h-risk::after{background:linear-gradient(90deg,var(--red),#ff7070);}
+/* legacy class names for US tools */
+.s-health .hc-icon,.s-health .hc-lbl{color:var(--green);} .s-health::after{background:linear-gradient(90deg,var(--green2),var(--green));}
+.s-stable .hc-icon,.s-stable .hc-lbl{color:var(--gold);}  .s-stable::after{background:linear-gradient(90deg,var(--gold),var(--gold2));}
+.s-risk   .hc-icon,.s-risk   .hc-lbl{color:var(--red);}   .s-risk::after{background:linear-gradient(90deg,var(--red),#ff7070);}
+
+/* ── Chart box ── */
+.ch-box{background:var(--surf);border:1px solid var(--border2);border-radius:10px;
+  padding:8px 13px 7px;flex-shrink:0;height:155px;display:flex;flex-direction:column;}
+.ch-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;flex-shrink:0;}
+.ch-title{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:300;color:var(--ink);}
+.ch-title em{font-style:italic;color:var(--gold);}
+.leg{display:flex;gap:10px;font-size:8px;color:var(--muted);}
+.leg span{display:flex;align-items:center;gap:3px;}
+.leg span::before{content:'';width:10px;height:2px;border-radius:1px;}
+.ch-wrap{flex:1;min-height:0;position:relative;}
+#chart{position:absolute;inset:0;}
+
+/* ── Table ── */
+.tb-box{background:var(--surf);border:1px solid var(--border2);border-radius:10px;
+  flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
+.tb-hdr{padding:6px 12px;border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.tb-title{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:300;color:var(--ink);}
+.tb-title em{font-style:italic;color:var(--gold);}
+.tb-note{font-size:8px;color:var(--muted);}
+.tb-scroll{overflow:auto;flex:1;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;}
+thead th{
+  background:var(--surf3);color:var(--ink2);
+  font-weight:700;font-size:7.5px;text-transform:uppercase;letter-spacing:.5px;
+  padding:4px 8px;text-align:right;white-space:nowrap;position:sticky;top:0;z-index:1;
+  border-bottom:1px solid var(--border2);
+}
+thead th:first-child{text-align:left;padding-left:10px;}
+thead th.g1{background:rgba(232,184,32,.2);  color:rgba(245,207,96,.9);}
+thead th.g2{background:rgba(46,204,142,.15); color:rgba(46,204,142,.9);}
+thead th.g3{background:rgba(74,128,212,.2);  color:rgba(150,190,255,.9);}
+thead th.g4{background:rgba(224,123,0,.18);  color:rgba(245,160,48,.9);}
+thead th.g5{background:rgba(24,184,160,.18); color:rgba(100,220,200,.9);}
+tbody tr{border-bottom:1px solid rgba(100,150,255,.05);transition:background .1s;}
+tbody tr:hover{background:rgba(232,184,32,.03);}
+tbody tr.yr-hi{background:rgba(232,184,32,.04);}
+tbody td{padding:3.5px 8px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink2);}
+tbody td:first-child{text-align:left;padding-left:10px;font-family:'Outfit',sans-serif;font-weight:600;color:var(--ink);font-size:10px;}
+.ph-row td{padding:3px 10px;font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--gold);background:rgba(232,184,32,.05);border-top:1px solid rgba(232,184,32,.1);
+  border-bottom:1px solid rgba(232,184,32,.06);text-align:left!important;font-family:'Outfit',sans-serif;}
+.badge,.badge-ms{
+  display:inline-block;background:rgba(74,128,212,.15);color:var(--blue);
+  border:1px solid rgba(74,128,212,.25);border-radius:3px;
+  padding:0 4px;font-size:7px;font-weight:700;margin-left:4px;vertical-align:middle;
+}
+.pos{color:var(--green)!important;font-weight:600;}.neg{color:var(--red)!important;}
+.inr{color:var(--saffron)!important;}.usd{color:var(--gold)!important;}
+.hi-val{color:var(--blue)!important;font-weight:600;}
+
+/* ── Header elements ── */
+.hdr-inner{position:relative;z-index:1;display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.hdr-glow{position:absolute;top:-50px;right:50px;width:260px;height:200px;
+  background:radial-gradient(ellipse,rgba(232,184,32,.13),transparent 70%);pointer-events:none;}
+.hdr-back{
+  display:flex;align-items:center;gap:5px;flex-shrink:0;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  border-radius:7px;padding:6px 12px 6px 8px;
+  font-size:11px;font-weight:700;color:rgba(255,255,255,.7);
+  font-family:'Manrope',sans-serif;cursor:pointer;transition:all .15s;margin-right:6px;
+}
+.hdr-back:hover{background:rgba(232,184,32,.18);border-color:rgba(232,184,32,.4);color:var(--gold);}
+.wordmark{display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.wordmark-icon,.wm-icon{
+  width:28px;height:28px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border-radius:7px;display:flex;align-items:center;justify-content:center;
+}
+.wordmark-icon svg,.wm-icon svg{display:block;}
+.wordmark-text,.wm-text{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#f0ece0;letter-spacing:-.2px;}
+.wordmark-text span,.wm-text span{color:var(--gold);}
+.hdr-sep{width:1px;height:24px;background:rgba(255,255,255,.1);margin:0 6px;flex-shrink:0;}
+.hdr h1{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;
+  color:#e4eef8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hdr h1 em{font-style:italic;color:var(--gold);}
+.hdr-sub{font-size:9px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hdr-right{margin-left:auto;position:relative;z-index:1;flex-shrink:0;display:flex;align-items:center;gap:6px;}
+.pdf-btn{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(232,184,32,.12);border:1px solid rgba(232,184,32,.28);
+  border-radius:6px;padding:6px 13px;
+  color:var(--gold);font-family:'Manrope',sans-serif;font-size:11px;font-weight:600;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.pdf-btn:hover{background:rgba(232,184,32,.22);}
+.pdf-btn.email-btn{background:rgba(74,128,212,.14);border-color:rgba(74,128,212,.32);color:var(--blue2);}
+.pdf-btn.email-btn:hover{background:rgba(74,128,212,.24);}
+.pdf-btn.hide-btn{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:rgba(220,210,185,.7);}
+.pdf-btn.hide-btn:hover{background:rgba(255,255,255,.12);}
+
+/* ── Risk buttons ── */
+.risk-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.risk-btn{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:8px 4px 7px;border-radius:9px;cursor:pointer;
+  border:1.5px solid var(--border2);background:var(--surf3);
+  font-family:'Manrope',sans-serif;transition:all .15s;
+}
+.risk-btn:hover{border-color:var(--blue);background:var(--surf2);}
+.risk-btn.on{background:linear-gradient(145deg,rgba(74,128,212,.15),rgba(74,128,212,.06));border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,128,212,.12);}
+.risk-btn.on.cons{background:linear-gradient(145deg,rgba(46,204,142,.12),rgba(46,204,142,.04));border-color:var(--green);box-shadow:0 0 0 3px rgba(46,204,142,.1);}
+.risk-btn.on.agg{background:linear-gradient(145deg,rgba(232,184,32,.12),rgba(232,184,32,.04));border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,184,32,.1);}
+.rb-icon{font-size:14px;line-height:1;}.rb-lbl{font-size:10px;font-weight:700;color:var(--ink2);}
+.rb-pct{font-size:8.5px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+/* ── Sidebar toggle transition ── */
+@media(max-width:767px){
+  .shell{flex-direction:column;}
+  .sb{width:100%!important;max-height:50dvh;flex-shrink:0;
+    border-right:none!important;border-bottom:1px solid var(--border2);
+    transition:max-height .3s ease,opacity .25s ease,padding .3s ease;}
+  .sb.closed{max-height:0!important;opacity:0;pointer-events:none;padding:0!important;overflow:hidden;}
+  .ct{flex:1;min-height:0;}
+  .hdr h1{font-size:14px;}
+  .hdr-sub{display:none;}
+  .ch-box{height:130px;}
+  .dash{grid-template-columns:repeat(3,1fr)!important;}
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--surf3);border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:var(--border2);}
+
+/* ── Table legibility ── */
+.col-grp-left{border-left:1px solid rgba(100,150,255,.1)!important;}
+tbody td.dim{color:var(--muted)!important;font-size:8.5px;}
+tbody td.col-total{font-weight:700;background:rgba(74,128,212,.05);border-left:1px solid rgba(74,128,212,.1);}
+.sr-cell{display:flex;align-items:center;gap:4px;justify-content:flex-end;}
+.sr-bar{height:3px;border-radius:2px;min-width:2px;}
+.sr-bar.good{background:var(--green);}.sr-bar.ok{background:var(--gold);}.sr-bar.low{background:var(--red);}
+.etf-plan-cell{font-size:9px;line-height:1.5;color:var(--ink2);min-width:160px;}
+
+
+/* ── Card aliases (FP US uses .blue/.green, India uses .blu/.grn) ── */
+.dc.blue,.dc.b { color:inherit; }
+.dc.blue .dv,.dc.b .dv { color:var(--blue); }
+.dc.blue::after,.dc.b::after { background:linear-gradient(90deg,#2c5aaa,var(--blue)); }
+.dc.green,.dc.g { color:inherit; }
+.dc.green .dv,.dc.g .dv { color:var(--green); }
+.dc.green::after,.dc.g::after { background:linear-gradient(90deg,var(--green2),var(--green)); }
+
+/* ── Snap cards (RET US + RET India) ── */
+.snap {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  flex-shrink:0;
+}
+.sc {
+  background:var(--surf);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:7px 10px;
+  position:relative;
+  overflow:hidden;
+}
+.sc::after {
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+}
+.sc .lb {
+  font-size:7px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:3px;
+}
+.sc .am {
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-weight:300;line-height:1;
+  color:var(--ink);
+}
+.sc .sub { font-size:7.5px;color:var(--muted);margin-top:2px; }
+.sc.hi { border-color:rgba(155,110,232,.25); }
+.sc.hi .am { color:var(--purple); }
+.sc.hi::after { background:linear-gradient(90deg,#5e3ab0,var(--purple)); }
+.sc.gr,.sc.grn { border-color:rgba(46,204,142,.2); }
+.sc.gr .am,.sc.grn .am { color:var(--green); }
+.sc.gr::after,.sc.grn::after { background:linear-gradient(90deg,var(--green2),var(--green)); }
+.sc.md,.sc.gold { border-color:rgba(232,184,32,.2); }
+.sc.md .am,.sc.gold .am { color:var(--gold); }
+.sc.md::after,.sc.gold::after { background:linear-gradient(90deg,var(--gold),var(--gold2)); }
+.sc.lo,.sc.blu { border-color:rgba(74,128,212,.2); }
+.sc.lo .am,.sc.blu .am { color:var(--blue2); }
+.sc.lo::after,.sc.blu::after { background:linear-gradient(90deg,#2c5aaa,var(--blue)); }
+.sc.sa,.sc.saf { border-color:rgba(224,123,0,.2); }
+.sc.sa .am,.sc.saf .am { color:var(--saffron2); }
+.sc.sa::after,.sc.saf::after { background:linear-gradient(90deg,var(--saffron),var(--saffron2)); }
+.sc.status { border-color:rgba(232,184,32,.2); }
+.sc.status .am { color:var(--gold); }
+.sc.status::after { background:linear-gradient(90deg,var(--gold),var(--gold2)); }
+.s-health.sc,.sc.s-health { border-color:rgba(46,204,142,.25); }
+.s-health.sc .am,.sc.s-health .am { color:var(--green); }
+.s-health.sc::after,.sc.s-health::after { background:linear-gradient(90deg,var(--green2),var(--green)); }
+.s-stable.sc,.sc.s-stable { border-color:rgba(232,184,32,.2); }
+.s-stable.sc .am,.sc.s-stable .am { color:var(--gold); }
+.s-stable.sc::after,.sc.s-stable::after { background:linear-gradient(90deg,var(--gold),var(--gold2)); }
+.s-risk.sc,.sc.s-risk { border-color:rgba(224,80,80,.22); }
+.s-risk.sc .am,.sc.s-risk .am { color:var(--red); }
+.s-risk.sc::after,.sc.s-risk::after { background:linear-gradient(90deg,var(--red),#ff7070); }
+
+/* ── FX box (Retire-In-India) ── */
+.fx-box {
+  background:linear-gradient(135deg,rgba(232,184,32,.08),rgba(224,123,0,.06));
+  border:1px solid rgba(232,184,32,.22);border-radius:8px;padding:10px 12px;margin-top:4px;
+}
+.fx-rate { font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--gold);line-height:1; }
+.fx-sub  { font-size:8px;color:var(--muted);margin-top:2px; }
+.fx-trend{ font-size:8.5px;margin-top:4px;color:var(--saffron); }
+
+/* ── Chart legend shortcuts ── */
+.la::before{background:var(--gold);}.lb2::before{background:var(--green);}
+.lc::before{background:var(--blue);}.ld::before{background:var(--saffron);}
+.le::before{height:0;border-top:2px dashed var(--red);background:transparent;}
+.lf::before{height:0;border-top:2px dashed var(--red);background:transparent;}
+
+/* ── Mobile header — 2-row layout ── */
+@media(max-width:600px){
+  .hdr{
+    height:auto !important;
+    min-height:calc(var(--hh) + env(safe-area-inset-top,0px));
+    flex-wrap:wrap;
+    overflow:visible;
+    padding-bottom:8px;
+    gap:6px;
+  }
+  .hdr-inner{
+    flex:1;
+    min-width:0;
+    order:1;
+  }
+  .hdr-right{
+    width:100%;
+    order:2;
+    margin-left:0;
+    padding:0 max(12px,env(safe-area-inset-left,0px));
+    display:flex;
+    gap:6px;
+    flex-shrink:0;
+  }
+  .hdr-right .pdf-btn{
+    flex:1;
+    justify-content:center;
+    padding:7px 6px;
+    font-size:10px;
+  }
+  .wm-text,.wordmark-text{ display:none !important; }
+  .hdr-sep{ display:none !important; }
+  .hdr h1{ font-size:13px; }
+  .hdr-sub{ display:none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-glow"></div>
+  <div class="hdr-inner">
+    <button class="hdr-back" onclick="window.location.href='index.html'">&#8592; Home</button>
+    <div class="wordmark">
+      <div class="wordmark-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <polyline points="1,13 5,8 8,10 12,4 17,6" stroke="#0d1117" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <line x1="1" y1="16" x2="17" y2="16" stroke="#0d1117" stroke-width="1.5" stroke-linecap="round"/>
+      </svg></div>
+      <div class="wm-text">Retirement<span>Planner</span></div>
+    </div>
+    <div class="hdr-sep"></div>
+    <span style="font-size:20px;flex-shrink:0">🇮🇳</span>
+    <div style="min-width:0">
+      <h1>Retirement Plan — India</h1>
+      <p class="hdr-sub">EPF · PPF · NPS · SCSS · Drawdown strategy · Year-by-year in ₹</p>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <button id="toggle-inputs-btn" class="pdf-btn hide-btn" onclick="toggleSb()">&#9776; Hide Inputs</button>
+    <button class="pdf-btn" onclick="exportPDF()">&#8659; PDF</button>
+    <button class="pdf-btn email-btn" onclick="emailPlan()">&#9993; Email</button>
+  </div>
+</div>
+
+<div class="shell">
+<div class="sb" id="sidebar">
+
+  <div class="sbox">
+    <div class="sbox-hdr">👤 Who You Are</div>
+    <div class="sbox-body">
+      <div class="m-row">
+        <span class="m-lbl">Married / Partner?</span>
+        <div class="tw">
+          <button class="tb on" id="btn_yes" onclick="setMarried(true)">Yes</button>
+          <button class="tb"    id="btn_no"  onclick="setMarried(false)">No</button>
+        </div>
+      </div>
+      <div class="pair" style="margin-bottom:9px">
+        <div class="sg">
+          <div class="sg-r"><span class="sg-n">Your Name</span></div>
+          <input type="text" id="your_name" placeholder="e.g. Ramesh" class="ninp" oninput="go()">
+        </div>
+        <div class="sg spouse-row">
+          <div class="sg-r"><span class="sg-n">Spouse Name</span></div>
+          <input type="text" id="spouse_name" placeholder="e.g. Sunita" class="ninp" oninput="go()">
+        </div>
+      </div>
+      <div class="pair">
+        <div class="sg">
+          <div class="sg-r"><span class="sg-n">Your Age</span><span class="sg-v" id="l_ya">0</span></div>
+          <input type="range" min="50" max="85" value="60" id="your_age" oninput="go()">
+        </div>
+        <div class="sg spouse-row">
+          <div class="sg-r"><span class="sg-n">Spouse Age</span><span class="sg-v" id="l_sa">0</span></div>
+          <input type="range" min="50" max="85" value="57" id="spouse_age" oninput="go()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sbox">
+    <div class="sbox-hdr">💸 Spending &amp; Inflation</div>
+    <div class="sbox-body">
+      <div class="sg">
+        <div class="sg-r"><span class="sg-n">Annual Spending</span><span class="sg-v s" id="l_sp">₹0</span></div>
+        <input type="range" min="0" max="9000000" step="100000" value="0" id="spend" oninput="go()">
+        <div class="sg-hint">Total household annual expenses today</div>
+      </div>
+      <div class="pair">
+        <div class="sg">
+          <div class="sg-r"><span class="sg-n">CPI Inflation</span><span class="sg-v" id="l_in">0%</span></div>
+          <input type="range" min="0" max="12" step="0.5" value="0" id="infl" oninput="go()">
+          <div class="sg-hint">Typical India ~6%</div>
+        </div>
+        <div class="sg">
+          <div class="sg-r"><span class="sg-n">Extra Lifestyle</span><span class="sg-v" id="l_ex">0%</span></div>
+          <input type="range" min="0" max="5" step="0.5" value="0" id="extra_infl" oninput="go()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sbox">
+    <div class="sbox-hdr">🏦 Retirement Corpus</div>
+    <div class="sbox-body">
+      <div class="pair-lbl">EPF / Gratuity</div>
+      <div class="pair" style="margin-bottom:9px">
+        <div class="sg">
+          <div class="sg-r"><span class="sg-n">Your EPF</span><span class="sg-v g" id="l_epf">₹0</span></div>
+          <input type="range" min="0" max="60000000" step="500000" value="0" id="epf_bal" class="s2" oninput="go()">
+        </div>
+        <div class="sg spouse-row">
+          <div class="sg-r"><span class="sg-n">Spouse EPF</span><span class="sg-v g" id="l_sepf">₹0</span></div>
+          <input type="range" min="0" max="60000000" step="500000" value="0" id="sepf_bal" class="s2" oninput="go()">
+        </div>
+      </div>
+      <div class="pair-lbl">PPF Balance</div>
+      <div class="pair" style="margin-bottom:9px">
+        <div class="sg">
+          <div class="sg-r"><span class="sg-n">Your PPF</span><span class="sg-v s" id="l_ppf">₹0</span></div>
+          <input type="range" min="0" max="30000000" step="250000" value="0" id="ppf_bal" class="s3" oninput="go()">
+        </div>
+        <div class="sg spouse-row">
+          <div class="sg-r"><span class="sg-n">Spouse PPF</span><span class="sg-v s" id="l_sppf">₹0</span></div>
+          <input type="range" min="0" max="30000000" step="250000" value="0" id="sppf_bal" class="s3" oninput="go()">
+        </div>
+      </div>
+      <div class="pair-lbl">NPS Corpus at Retirement</div>
+      <div class="pair" style="margin-bottom:9px">
+        <div class="sg">
+          <div class="sg-r"><span class="sg-n">Your NPS</span><span class="sg-v" id="l_nps">₹0</span></div>
+          <input type="range" min="0" max="60000000" step="500000" value="0" id="nps_bal" oninput="go()">
+          <div class="sg-hint">40% → annuity · 60% tax-free lump sum</div>
+        </div>
+        <div class="sg spouse-row">
+          <div class="sg-r"><span class="sg-n">Spouse NPS</span><span class="sg-v" id="l_snps">₹0</span></div>
+          <input type="range" min="0" max="60000000" step="500000" value="0" id="snps_bal" oninput="go()">
+        </div>
+      </div>
+      <div class="pair-lbl">Other Investments</div>
+      <div class="pair">
+        <div class="sg">
+          <div class="sg-r"><span class="sg-n">Mutual Funds</span><span class="sg-v g" id="l_mf">₹0</span></div>
+          <input type="range" min="0" max="60000000" step="500000" value="0" id="mf_bal" class="s2" oninput="go()">
+        </div>
+        <div class="sg">
+          <div class="sg-r"><span class="sg-n">FD / Savings</span><span class="sg-v" id="l_fd">₹0</span></div>
+          <input type="range" min="0" max="30000000" step="250000" value="0" id="fd_bal" oninput="go()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sbox">
+    <div class="sbox-hdr">📋 Pension Income</div>
+    <div class="sbox-body">
+      <div class="pair">
+        <div class="sg">
+          <div class="sg-r"><span class="sg-n">Your Monthly Pension</span><span class="sg-v g" id="l_pen">₹0</span></div>
+          <input type="range" min="0" max="600000" step="5000" value="0" id="pension" class="s2" oninput="go()">
+          <div class="ss-note" id="pen_note">Government/EPS/defined benefit</div>
+        </div>
+        <div class="sg spouse-row">
+          <div class="sg-r"><span class="sg-n">Spouse Pension</span><span class="sg-v g" id="l_spen">₹0</span></div>
+          <input type="range" min="0" max="600000" step="5000" value="0" id="spension" class="s2" oninput="go()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sbox">
+    <div class="sbox-hdr">📈 Returns &amp; SCSS</div>
+    <div class="sbox-body">
+      <div class="sg">
+        <div class="sg-r"><span class="sg-n">Portfolio Return / yr</span><span class="sg-v" id="l_ret">0%</span></div>
+        <input type="range" min="0" max="14" step="0.5" value="0" id="ret_pct" oninput="go()">
+        <div class="sg-hint">MF avg ~10-12% · Conservative ~7-8%</div>
+      </div>
+      <div class="sg">
+        <div class="sg-r"><span class="sg-n">SCSS Investment</span><span class="sg-v s" id="l_scss">₹0</span></div>
+        <input type="range" min="0" max="9000000" step="250000" value="0" id="scss_bal" class="s3" oninput="go()">
+        <div class="sg-hint">Max ₹30L · 8.2%/yr quarterly payout · age 60+</div>
+      </div>
+      <div class="sg" style="margin-top:6px">
+        <div class="sg-r"><span class="sg-n">Direct Equity / Stocks</span><span class="sg-v" id="l_eq">₹0</span></div>
+        <input type="range" min="0" max="150000000" step="500000" value="0" id="eq_bal" oninput="go()">
+        <div class="sg-hint">Demat portfolio at retirement — draws down as needed</div>
+      </div>
+      <div class="sg" style="margin-top:6px">
+        <div class="sg-r"><span class="sg-n">Real Estate Value</span><span class="sg-v" id="l_re">₹0</span></div>
+        <input type="range" min="0" max="500000000" step="2000000" value="0" id="re_val" oninput="go()">
+        <div class="sg-hint">Investment property — appreciates ~8%/yr · counted in net worth</div>
+      </div>
+      <div class="sg" style="margin-top:6px">
+        <div class="sg-r"><span class="sg-n">Rental Income / yr</span><span class="sg-v" id="l_rent">₹0</span></div>
+        <input type="range" min="0" max="10000000" step="100000" value="0" id="rent_inc" oninput="go()">
+        <div class="sg-hint">Annual rental income — added to fixed income sources</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="ct">
+
+  <div class="snap">
+    <div class="sc hi">
+      <div class="lb">Total Corpus</div>
+      <div class="am" id="sn_tot">—</div>
+      <div class="sub">All investments</div>
+    </div>
+    <div class="sc sa">
+      <div class="lb">Monthly Income</div>
+      <div class="am" id="sn_inc">—</div>
+      <div class="sub">Pension + SCSS + NPS annuity</div>
+    </div>
+    <div class="sc gr">
+      <div class="lb">Portfolio @ Age 75</div>
+      <div class="am" id="sn_p75">—</div>
+      <div class="sub">Projected total</div>
+    </div>
+    <div class="sc gr">
+      <div class="lb">Portfolio @ Age 85</div>
+      <div class="am" id="sn_p85">—</div>
+      <div class="sub">Projected total</div>
+    </div>
+    <div class="sc sa">
+      <div class="lb">FI Coverage</div>
+      <div class="am" id="sn_cov">—</div>
+      <div class="sub">Income vs spending</div>
+    </div>
+    <div class="sc status s-stable" id="status_card">
+      <div class="lb">Plan Health</div>
+      <div class="status-ring">
+        <div class="status-icon" id="status_icon">◈</div>
+        <div>
+          <div class="status-label" id="status_label">Stable</div>
+          <div class="status-why" id="status_why">Enter your numbers</div>
+        </div>
+      </div>
+      <div class="status-meter"><div class="status-meter-fill" id="status_fill" style="width:55%"></div></div>
+    </div>
+  </div>
+
+  <div class="ch-box">
+    <div class="ch-top">
+      <div class="ch-title">Retirement Portfolio — Year by Year</div>
+      <div class="leg">
+        <span class="la">EPF+PPF</span>
+        <span class="lb">MF+FD</span>
+        <span class="lc">NPS</span>
+        <span class="ld">Total</span>
+        <span class="le">Spending</span>
+      </div>
+    </div>
+    <div class="ch-wrap"><canvas id="chart"></canvas></div>
+  </div>
+
+  <div class="tb-box">
+    <div class="tb-hdr">
+      <div class="tb-title">Year-by-Year Drawdown &amp; Income Plan</div>
+      <div class="tb-note">Drawdown priority · Pension income · NPS annuity · SCSS · Allocation</div>
+    </div>
+    <div class="tb-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th colspan="4"></th>
+            <th colspan="2" style="text-align:center;color:rgba(46,204,142,.6);font-size:7px;background:rgba(46,204,142,.05);border-left:1px solid rgba(46,204,142,.1)">&#9654; Corpus</th>
+            <th colspan="2" style="text-align:center;color:rgba(224,123,0,.6);font-size:7px;background:rgba(224,123,0,.05);border-left:1px solid rgba(224,123,0,.1)">&#9654; Real Estate</th>
+            <th colspan="2"></th>
+            <th></th>
+          </tr>
+          <tr>
+            <th style="text-align:left">Year</th>
+            <th style="text-align:center">Age</th>
+            <th id="th-sp" style="display:none;text-align:center">Spouse</th>
+            <th>Spending</th>
+            <th style="border-left:1px solid rgba(46,204,142,.1)">Safe Corpus</th>
+            <th>Growth Corpus</th>
+            <th style="border-left:1px solid rgba(224,123,0,.1)">RE Value</th>
+            <th>RE Draw</th>
+            <th style="font-weight:800">Total ₹</th>
+            <th style="min-width:160px;text-align:left">Drawdown &amp; Notes</th>
+            <th style="min-width:180px;text-align:left" class="g3">Investment Strategy</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+function toggleSb(){
+  var sb=document.getElementById('sidebar');
+  if(!sb)return;
+  sb.classList.toggle('closed');
+  var btn=document.getElementById('toggle-inputs-btn');
+  if(btn)btn.textContent=sb.classList.contains('closed')?'\u2630 Show Inputs':'\u2715 Hide Inputs';
+}
+function fR(v){if(!v&&v!==0)return '—';const neg=v<0;v=Math.abs(v);let s;if(v>=10000000)s='₹'+(v/10000000).toFixed(1)+'Cr';else if(v>=100000)s='₹'+(v/100000).toFixed(1)+'L';else if(v>=1000)s='₹'+(v/1000).toFixed(0)+'K';else s='₹'+Math.round(v).toLocaleString('en-IN');return neg?'-'+s:s;}
+function fRf(v){return v===0?'—':'₹'+Math.abs(Math.round(v)).toLocaleString('en-IN');}
+function pct(v){return v.toFixed(1)+'%';}
+
+let married=true;
+function setMarried(val){
+  married=val;
+  $('btn_yes').classList.toggle('on',val);
+  $('btn_no').classList.toggle('on',!val);
+  $('sidebar').classList.toggle('hide-spouse',!val);
+  $('th-sp').style.display=val?'':'none';
+  go();
+}
+
+function getP(){
+  return {
+    ya:+$('your_age').value, sa:+$('spouse_age').value,
+    yourName:$('your_name').value.trim()||'You',
+    spouseName:$('spouse_name').value.trim()||'Spouse',
+    sp:+$('spend').value,
+    infl:+$('infl').value/100, ex:+$('extra_infl').value/100,
+    epf:+$('epf_bal').value + (married?+$('sepf_bal').value:0),
+    ppf:+$('ppf_bal').value + (married?+$('sppf_bal').value:0),
+    nps:+$('nps_bal').value + (married?+$('snps_bal').value:0),
+    mf:+$('mf_bal').value,
+    fd:+$('fd_bal').value,
+    pen:(+$('pension').value + (married?+$('spension').value:0))*12,
+    ret:+$('ret_pct').value/100,
+    scss:+$('scss_bal').value,
+    eq:  +$('eq_bal').value,
+    re:  +$('re_val').value,
+    rent:+$('rent_inc').value,
+  };
+}
+function setLabels(p){
+  $('l_ya').textContent=p.ya; $('l_sa').textContent=p.sa;
+  $('l_sp').textContent=fR(p.sp);
+  $('l_in').textContent=pct(p.infl*100); $('l_ex').textContent=pct(p.ex*100);
+  $('l_epf').textContent=fR(+$('epf_bal').value); $('l_sepf').textContent=fR(+$('sepf_bal').value);
+  $('l_ppf').textContent=fR(+$('ppf_bal').value); $('l_sppf').textContent=fR(+$('sppf_bal').value);
+  $('l_nps').textContent=fR(+$('nps_bal').value); $('l_snps').textContent=fR(+$('snps_bal').value);
+  $('l_mf').textContent=fR(p.mf); $('l_fd').textContent=fR(p.fd);
+  $('l_pen').textContent=fR(+$('pension').value); $('l_spen').textContent=fR(+$('spension').value);
+  $('l_ret').textContent=pct(p.ret*100);
+  $('l_scss').textContent=fR(p.scss);
+  $('l_eq').textContent=fR(p.eq||0);
+  $('l_re').textContent=fR(p.re||0);
+  $('l_rent').textContent=fR(p.rent||0);
+}
+
+// NPS: 40% must buy annuity (~6-7% annuity rate), 60% tax-free lump sum added to corpus
+function npsAnnuityIncome(nps){ return Math.round(nps*0.40*0.065); } // 6.5% annuity rate
+function npsLumpsum(nps){ return Math.round(nps*0.60); }
+// SCSS: 8.2% annual on up to ₹30L, quarterly payout
+function scssIncome(scss){ return Math.round(Math.min(scss,3000000)*0.082); }
+
+function project(p){
+  const S=2025;
+  const E=Math.min(2095, S+Math.max(95-p.ya, 95-p.sa, 30));
+  // corpus: EPF+PPF (safe at ~8%), NPS lumpsum added to mf/fd, MF/FD at portfolio return
+  const npsLs=npsLumpsum(p.nps);
+  let safe=p.epf+p.ppf;
+  let re=p.re||0; // EPF+PPF drawn conservatively
+  let growth=p.mf+p.fd+npsLs+(p.eq||0); // MF, FD, NPS lumpsum
+  const scssAnn=scssIncome(p.scss);
+  const npsAnn=npsAnnuityIncome(p.nps);
+  const fixedIncome=p.pen+scssAnn+npsAnn+(p.rent||0); // annual fixed income
+  const rows=[];
+
+  for(let y=S;y<=E;y++){
+    const t=y-S, ya=p.ya+t, sa=p.sa+t;
+    const spend=p.sp*Math.pow((1+p.infl)*(1+p.ex),t);
+    const need=Math.max(0,spend-fixedIncome);
+
+    // Drawdown priority: safe accounts first, then growth
+    let safeWd=0, growthWd=0;
+    let reWd=0;
+    if(need>0){
+      safeWd=Math.min(safe*0.08, need); // draw ~8% of safe per year max
+      const stillNeed=Math.max(0,need-safeWd);
+      growthWd=Math.min(growth, stillNeed);
+    }
+    safe=Math.max(0,(safe-safeWd)*(1+0.08));
+    growth=Math.max(0,(growth-growthWd)*(1+p.ret));
+    re  =Math.max(0,(re-reWd)*1.08);
+    const tot=safe+growth+re;
+
+    // Build drawdown+income tags
+    const dTags=[];
+    if(fixedIncome>0){
+      if(p.pen>0)    dTags.push(`<span class="tag tag-pen"><span class="tag-dot"></span>Pension ${fR(p.pen)}</span>`);
+      if(scssAnn>0)  dTags.push(`<span class="tag tag-scss"><span class="tag-dot"></span>SCSS ${fR(scssAnn)}</span>`);
+      if(npsAnn>0)   dTags.push(`<span class="tag tag-nps"><span class="tag-dot"></span>NPS Annuity ${fR(npsAnn)}</span>`);
+    }
+    if(safeWd>0)   dTags.push(`<span class="tag tag-epf"><span class="tag-dot"></span>EPF/PPF ${fR(safeWd)}</span>`);
+    if(growthWd>0) dTags.push(`<span class="tag tag-mf"><span class="tag-dot"></span>MF/FD ${fR(growthWd)}</span>`);
+
+    // Allocation
+    const alloc=allocCell(ya);
+
+    let ms='';
+    if(t===0) ms='Retirement starts';
+    else if(ya===65) ms='SCSS eligible';
+    else if(ya===70) ms='Review allocation';
+    else if(ya===75) ms='Conservative shift';
+    else if(ya===80) ms='Capital preservation';
+
+    rows.push({y,ya,sa,spend,safeWd,growthWd,tot,safe,growth,fixedIncome,re,reWd,ms,dTags:dTags.join('')});
+  }
+  return rows;
+}
+
+function allocCell(ya){
+  let slots;
+  if(ya<65)      slots=[['50%','Nifty 50 Index','eq','Large Cap'],['15%','Nifty Next 50','eq','Mid+'],['20%','SBI/HDFC Bond','bd','Debt MF'],['10%','PPF/FD','gv','Safe'],['5%','Liquid Fund','gv','Cash']];
+  else if(ya<70) slots=[['40%','Nifty 50 Index','eq','Equity'],['10%','Balanced Adv','eq','Hybrid'],['25%','HDFC Bond','bd','Debt'],['15%','SCSS/FD','gv','Safe'],['10%','Liquid MF','gv','Cash']];
+  else if(ya<75) slots=[['25%','Nifty 50 Index','eq','Equity'],['30%','Debt MF','bd','Debt'],['25%','SCSS/FD','gv','Safe'],['15%','PMVVY','sc','Pension'],['5%','Liquid','gv','Cash']];
+  else           slots=[['15%','Balanced Fund','eq','Equity'],['30%','Debt/Gilt MF','bd','Debt'],['35%','FD/SCSS','gv','Safe'],['15%','PMVVY/Annuity','sc','Pension'],['5%','Liquid','gv','Cash']];
+  return `<div class="alloc-cell">${slots.map(([p,t,c,l])=>`<div class="al"><span class="al-pct">${p}</span><span class="al-etf ${c}" title="${t}">${t}</span><span class="al-lbl">${l}</span></div>`).join('')}</div>`;
+}
+
+function calcStatus(p,rows){
+  const inv=p.epf+p.ppf+npsLumpsum(p.nps)+p.mf+p.fd;
+  const annualIncome=p.pen+scssIncome(p.scss)+npsAnnuityIncome(p.nps);
+  const cov=(annualIncome+(inv>0?inv*0.04:0))/Math.max(1,p.sp);
+  const at80=rows.find(r=>r.ya>=80); const ok80=at80?at80.tot>0:false;
+  let state,icon,lbl,why;
+  if(!ok80||cov<0.7){state='s-risk';icon='⚠';lbl='At Risk';why=!ok80?'Corpus may deplete before age 80':'Fixed income covers '+Math.round(cov*100)+'% of spending';}
+  else if(cov>=1.0&&ok80){state='s-health';icon='✦';lbl='Healthy';why=Math.round(cov*100)+'% covered · corpus growing';}
+  else{state='s-stable';icon='◈';lbl='Stable';why=Math.round(cov*100)+'% covered · monitor withdrawals';}
+  $('status_card').className=`sc status ${state}`;
+  $('status_icon').textContent=icon; $('status_label').textContent=lbl; $('status_why').textContent=why;
+}
+
+function updateSnap(p,rows){
+  const inv=p.epf+p.ppf+npsLumpsum(p.nps)+p.mf+p.fd;
+  const monthlyIncome=(p.pen+scssIncome(p.scss)+npsAnnuityIncome(p.nps))/12;
+  const cov=(p.pen+scssIncome(p.scss)+npsAnnuityIncome(p.nps))/Math.max(1,p.sp);
+  $('sn_tot').textContent=fR(inv);
+  $('sn_inc').textContent=fR(monthlyIncome)+'/mo';
+  const r75=rows.find(r=>r.ya>=75); $('sn_p75').textContent=r75?fR(r75.tot):'—';
+  const r85=rows.find(r=>r.ya>=85); $('sn_p85').textContent=r85?fR(r85.tot):'—';
+  $('sn_cov').textContent=cov>0?pct(cov*100):'—';
+}
+
+let myChart=null;
+function drawChart(rows){
+  const ctx=$('chart').getContext('2d');
+  if(myChart) myChart.destroy();
+  if(!rows.length) return;
+  myChart=new Chart(ctx,{
+    type:'line',
+    data:{labels:rows.map(r=>r.y),datasets:[
+      {label:'EPF+PPF', data:rows.map(r=>r.safe/1e5),   borderColor:'#2c72d4',backgroundColor:'rgba(44,114,212,.09)',fill:true,tension:.35,pointRadius:0,borderWidth:2},
+      {label:'MF+FD',   data:rows.map(r=>r.growth/1e5), borderColor:'#17936a',backgroundColor:'rgba(23,147,106,.08)',fill:true,tension:.35,pointRadius:0,borderWidth:2},
+      {label:'Total',   data:rows.map(r=>r.tot/1e5),    borderColor:'#6340c0',backgroundColor:'transparent',fill:false,tension:.35,pointRadius:0,borderWidth:2.5},
+      {label:'Spending',data:rows.map(r=>r.spend/1e5),  borderColor:'#c43535',backgroundColor:'transparent',fill:false,tension:.35,pointRadius:0,borderWidth:1.5,borderDash:[5,3]},
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,animation:{duration:200},
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},
+        tooltip:{backgroundColor:'#fff',borderColor:'rgba(60,90,160,.15)',borderWidth:1,titleColor:'#475f7e',bodyColor:'#18243a',padding:8,
+          callbacks:{label:c=>` ${c.dataset.label}: ₹${c.parsed.y.toFixed(1)}L`}}},
+      scales:{
+        x:{grid:{color:'rgba(80,110,170,.07)'},ticks:{color:'#6a7d9a',font:{size:8},maxTicksLimit:10}},
+        y:{grid:{color:'rgba(80,110,170,.07)'},ticks:{color:'#6a7d9a',font:{size:8},callback:v=>'₹'+v.toFixed(0)+'L'}},
+      }
+    }
+  });
+}
+
+function buildTable(rows,p){
+  const thSp=$('th-sp');
+  if(thSp) thSp.style.display=married?'':'none';
+  const body=$('tbody'); body.innerHTML='';
+  let lph='';
+  rows.forEach(r=>{
+    const ph=r.ya<65?'Early Retirement (60–65)':r.ya<70?'Active Retirement (65–70)':r.ya<75?'Mid Retirement (70–75)':'Late Retirement (75+)';
+    if(ph!==lph){
+      lph=ph;
+      const pr=document.createElement('tr'); pr.className='ph-row';
+      pr.innerHTML=`<td colspan="7">${ph}</td>`;
+      body.appendChild(pr);
+    }
+    const tr=document.createElement('tr');
+    if(r.ms) tr.className='ms';
+    const badge=r.ms?`<span class="badge">${r.ms}</span>`:'';
+    const spCell=married?`<td style="text-align:center;color:var(--muted)">${r.sa}</td>`:`<td style="display:none">${r.sa}</td>`;
+    tr.innerHTML=`
+      <td>${r.y}${badge}</td>
+      <td style="text-align:center;color:var(--muted)">${r.ya}</td>
+      ${spCell}
+      <td>${fR(r.spend)}</td>
+      <td style="color:var(--green);border-left:1px solid rgba(46,204,142,.08)">${fR(r.safe)}</td>
+      <td style="color:var(--blue)">${fR(r.growth)}</td>
+      <td style="color:var(--saffron2);border-left:1px solid rgba(224,123,0,.08)">${r.re>0?fR(r.re):'—'}</td>
+      <td style="color:${r.reWd>0?'var(--red)':'var(--muted)'}">${r.reWd>0?fR(r.reWd):'—'}</td>
+      <td style="font-weight:700;color:var(--blue)">${r.tot>0?fR(r.tot):'₹0'}</td>
+      <td style="text-align:left">${r.dTags&&r.dTags.length?`<div class="tags">${r.dTags}</div>`:'<span class="tag-none">—</span>'}</td>
+      <td style="text-align:left;min-width:180px">${allocCell(r.ya)}</td>`;
+
+    body.appendChild(tr);
+  });
+}
+
+function go(){
+  const p=getP(); setLabels(p);
+  const rows=project(p);
+  updateSnap(p,rows); calcStatus(p,rows); drawChart(rows); buildTable(rows,p);
+}
+
+
+// ── PDF Export ─────────────────────────────────────────────
+function exportPDF(){
+  const p=getP(); const rows=project(p);
+  const title=married?`${p.yourName} & ${p.spouseName}`:p.yourName;
+  const today=new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'});
+  const npsAnn=npsAnnuityIncome(p.nps), scssAnn=scssIncome(p.scss);
+  const monthlyIncome=(p.pen+scssAnn+npsAnn)/12;
+  const CHARTJS='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
+
+  const ds1=JSON.stringify(rows.map(r=>+(r.safe/1e5).toFixed(1)));
+  const ds2=JSON.stringify(rows.map(r=>+(r.growth/1e5).toFixed(1)));
+  const ds3=JSON.stringify(rows.map(r=>+(r.tot/1e5).toFixed(1)));
+  const ds4=JSON.stringify(rows.map(r=>+(r.spend/1e5).toFixed(1)));
+  const labs=JSON.stringify(rows.map(r=>r.y));
+
+  let tbl='<table style="width:100%;border-collapse:collapse;font-size:8px;font-family:monospace"><thead><tr style="background:#111827;color:#ccc"><th style="padding:4px 6px;text-align:left">Year</th><th style="padding:4px 6px;text-align:center">Age</th><th style="padding:4px 6px">Spending</th><th style="padding:4px 6px">Fixed Income</th><th style="padding:4px 6px">EPF/PPF Draw</th><th style="padding:4px 6px">MF/FD Draw</th><th style="padding:4px 6px">Portfolio</th></tr></thead><tbody>';
+  let lph='';
+  rows.forEach(r=>{
+    const ph=r.ya<65?'Early Retirement':r.ya<70?'Active Retirement':r.ya<75?'Mid Retirement':'Late Retirement';
+    if(ph!==lph){lph=ph;tbl+=`<tr><td colspan="7" style="padding:3px 6px;font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a6800;background:#fdf5e0;border-top:1px solid #e8d080;font-family:sans-serif">${ph}</td></tr>`;}
+    const bg=r.ms?'background:#f0f4ff;':'';
+    tbl+=`<tr style="${bg}border-bottom:1px solid #f0f0f0"><td style="padding:3px 6px;font-family:sans-serif;font-weight:600">${r.y}${r.ms?` <span style="font-size:7px;color:#2c72d4">${r.ms}</span>`:''}</td><td style="padding:3px 6px;text-align:center;color:#888">${r.ya}</td><td style="padding:3px 6px;text-align:right">${fR(r.spend)}</td><td style="padding:3px 6px;text-align:right;color:#17936a">${fR(r.fixedIncome)}</td><td style="padding:3px 6px;text-align:right;color:#2c72d4">${r.safeWd>0?fR(r.safeWd):'—'}</td><td style="padding:3px 6px;text-align:right;color:#17936a">${r.growthWd>0?fR(r.growthWd):'—'}</td><td style="padding:3px 6px;text-align:right;font-weight:700;color:#6340c0">${fR(r.tot)}</td></tr>`;
+  });
+  tbl+='</tbody></table>';
+
+  const win=window.open('','retpdf','width=900,height=1100,resizable=yes,scrollbars=yes');
+  const H=win.document;
+  H.write('<!DOCTYPE html><html><head>');
+  H.write('<meta charset="UTF-8">');
+  H.write('<title>Retirement Plan India \u2014 '+title+'</title>');
+  H.write('<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Outfit:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">');
+  H.write('<style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:Outfit,sans-serif;color:#18243a;background:#fff;font-size:11px;}.hdr{background:linear-gradient(105deg,#111827,#162240 55%,#0f1d38);color:#fff;padding:18px 28px 16px;display:flex;justify-content:space-between;page-break-inside:avoid;}.ph{position:relative;z-index:1;}.phr{position:relative;z-index:1;text-align:right;}.ph h1{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:300;color:#e4eef8;}.ph h1 em{font-style:italic;color:#e8a020;}.ph p{font-size:9px;color:rgba(160,190,230,.45);margin-top:3px;}.phn{font-family:"Cormorant Garamond",serif;font-size:18px;color:#e8a020;}.phd{font-size:8px;color:rgba(160,190,230,.4);margin-top:2px;text-transform:uppercase;letter-spacing:.4px;}.sec{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2c72d4;margin:14px 0 10px;display:flex;align-items:center;gap:8px;}.sec::before,.sec::after{content:"";flex:1;height:1px;}.sec::before{background:linear-gradient(90deg,transparent,rgba(44,114,212,.25));}.sec::after{background:linear-gradient(90deg,rgba(44,114,212,.25),transparent);}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}.card{border:1px solid #dde3ef;border-radius:8px;padding:10px 13px;background:#f8f9fc;position:relative;overflow:hidden;}.card::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;}.b::after{background:linear-gradient(90deg,#2c72d4,#4a7fd4);}.g::after{background:linear-gradient(90deg,#17936a,#3ecf8e);}.s::after{background:linear-gradient(90deg,#c97c08,#e8a020);}.cl{font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#7a849a;margin-bottom:4px;}.cv{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:400;}.cv.b{color:#2c72d4;}.cv.g{color:#17936a;}.cv.s{color:#c97c08;}.cs{font-size:8px;color:#7a849a;margin-top:2px;}.ch-w{height:165px;position:relative;margin-bottom:10px;}.leg{display:flex;gap:12px;margin-bottom:5px;}.leg span{font-size:8.5px;color:#7a849a;display:flex;align-items:center;gap:4px;}.leg span::before{content:"";width:10px;height:2px;border-radius:1px;}.la::before{background:#2c72d4;}.lb::before{background:#17936a;}.lc::before{background:#6340c0;}.ld::before{background:#c43535;}.disc{font-size:7px;color:#aab0be;line-height:1.5;margin-top:10px;padding-top:8px;border-top:1px solid #eef1f7;}@page{margin:9mm 8mm;size:A4 landscape;}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}.no-print{display:none!important;}}</style>');
+  H.write('</head><body>');
+  H.write('<div class="hdr"><div class="ph"><h1>\uD83C\uDDEE\uD83C\uDDF3 Retirement Plan \u2014 <em>India</em></h1><p>Prepared for '+title+' \u00B7 '+today+' \u00B7 EPF \u00B7 PPF \u00B7 NPS \u00B7 SCSS \u00B7 Mutual Funds</p></div><div class="phr"><div class="phn">'+title+'</div><div class="phd">Generated '+today+'</div></div></div>');
+  H.write('<div style="padding:12px 28px 0">');
+  H.write('<div class="sec">Dashboard</div>');
+  H.write('<div class="cards">');
+  H.write('<div class="card b"><div class="cl">Total Corpus</div><div class="cv b">'+fR(p.epf+p.ppf+npsLumpsum(p.nps)+p.mf+p.fd)+'</div><div class="cs">All investments combined</div></div>');
+  H.write('<div class="card s"><div class="cl">Monthly Fixed Income</div><div class="cv s">'+fR(monthlyIncome)+'/mo</div><div class="cs">Pension + SCSS + NPS annuity</div></div>');
+  H.write('<div class="card g"><div class="cl">Portfolio @ Age 75</div><div class="cv g">'+(()=>{const r=rows.find(r=>r.ya>=75);return r?fR(r.tot):'—';})()+'</div><div class="cs">Projected</div></div>');
+  H.write('<div class="card g"><div class="cl">Portfolio @ Age 85</div><div class="cv g">'+(()=>{const r=rows.find(r=>r.ya>=85);return r?fR(r.tot):'—';})()+'</div><div class="cs">Projected</div></div>');
+  H.write('<div class="card s"><div class="cl">NPS Annuity / yr</div><div class="cv s">'+fR(npsAnn)+'</div><div class="cs">6.5% on 40% of corpus</div></div>');
+  H.write('<div class="card b"><div class="cl">SCSS Income / yr</div><div class="cv b">'+fR(scssAnn)+'</div><div class="cs">8.2% on SCSS balance</div></div>');
+  H.write('<div class="card g"><div class="cl">Annual Pension</div><div class="cv g">'+fR(p.pen)+'</div><div class="cs">Govt / EPS / defined benefit</div></div>');
+  H.write('<div class="card b"><div class="cl">Portfolio Return</div><div class="cv b">'+pct(p.ret*100)+'</div><div class="cs">Assumed annual return</div></div>');
+  H.write('</div>');
+  H.write('<div class="sec">Portfolio Trajectory</div>');
+  H.write('<div class="leg"><span class="la">EPF+PPF</span><span class="lb">MF+FD+NPS</span><span class="lc">Total</span><span class="ld">Spending</span></div>');
+  H.write('<div class="ch-w"><canvas id="pdf-chart"></canvas></div>');
+  H.write('<div class="sec">Year-by-Year Drawdown Plan</div>');
+  H.write(tbl);
+  H.write('<div class="disc">This plan is illustrative and not financial advice. NPS annuity rate ~6.5% assumed. SCSS rate 8.2% p.a. as of FY2024-25. Consult a SEBI-registered financial advisor.</div>');
+  H.write('</div>');
+  H.write('<div class="no-print" style="text-align:center;padding:18px;color:#7a849a">');
+  H.write('<button onclick="window.print()" style="background:#2c72d4;color:#fff;border:none;padding:8px 20px;border-radius:7px;cursor:pointer;font-family:Outfit,sans-serif;font-size:11px;font-weight:600">\u2B07 Save as PDF</button>\u00A0\u00A0');
+  H.write('<button onclick="window.close()" style="background:#eef1f7;color:#475f7e;border:1px solid #dde3ef;padding:8px 14px;border-radius:7px;cursor:pointer;font-family:Outfit,sans-serif;font-size:11px">Close</button>');
+  H.write('</div>');
+  H.write('</body></html>');
+  H.close();
+  // Load Chart.js then render chart
+  var s=win.document.createElement('script');
+  s.src=CHARTJS;
+  s.onload=function(){
+    var ctx=win.document.getElementById('pdf-chart').getContext('2d');
+    new win.Chart(ctx,{type:'line',data:{labels:JSON.parse(''+labs+''),datasets:[
+      {data:JSON.parse(''+ds1+''),borderColor:'#2c72d4',backgroundColor:'rgba(44,114,212,.1)',fill:true,tension:.35,pointRadius:0,borderWidth:2},
+      {data:JSON.parse(''+ds2+''),borderColor:'#17936a',backgroundColor:'rgba(23,147,106,.08)',fill:true,tension:.35,pointRadius:0,borderWidth:2},
+      {data:JSON.parse(''+ds3+''),borderColor:'#6340c0',fill:false,tension:.35,pointRadius:0,borderWidth:2.5},
+      {data:JSON.parse(''+ds4+''),borderColor:'#c43535',fill:false,tension:.35,pointRadius:0,borderWidth:1.5,borderDash:[5,3]},
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:0},plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{ticks:{color:'#6a7d9a',font:{size:8},maxTicksLimit:12}},y:{ticks:{color:'#6a7d9a',font:{size:8},callback:function(v){return '\u20B9'+v+'L';}}}}}});
+  };
+  win.document.head.appendChild(s);
+}
+
+
+function emailPlan(){
+  var _email = prompt('Send plan summary to:','');
+  if(!_email || _email.indexOf('@') < 0) return;
+  var p = getP ? getP() : {};
+  var _name  = ($('your_name').value||'You')+(married?' & '+($('spouse_name').value||'Spouse'):'');
+  var _today = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var _subj  = encodeURIComponent('RetirementPlanner — '+_name+' — Plan Summary');
+  var _bod   = encodeURIComponent(
+    'RetirementPlanner — Plan Summary\n'
+    +'Generated: '+_today+'\n'
+    +'Plan: '+_name+'\n\n'
+    +(function(){var p2=getP(),rows2=project(p2),last=rows2[rows2.length-1];return 'EPF+PPF: ₹'+(p2.epf/100000).toFixed(0)+'L\n'+'NPS: ₹'+(p2.nps/100000).toFixed(0)+'L\n'+'MF: ₹'+(p2.mf/100000).toFixed(0)+'L\n'+'Spending: ₹'+(p2.sp/100000).toFixed(0)+'L/yr\n'+'Corpus@end: '+(last?'₹'+(last.tot/10000000).toFixed(1)+'Cr':'N/A')+'\n\n';})()
+    +'——\n'
+    +'To get the full PDF:\n'
+    +'1. Open RetirementPlanner on your device\n'
+    +'2. Re-enter your details (they are stored locally)\n'
+    +'3. Tap Export PDF → then Print → Save as PDF\n\n'
+    +'For educational purposes only. Not financial advice.\nRetirementPlanner'
+  );
+  window.location.href='mailto:'+_email+'?subject='+_subj+'&body='+_bod;
+}
+
+
+
+go();
+</script>
+<script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',function(){
+      navigator.serviceWorker.register('/sw.js').catch(function(){});
+    });
+  }
+</script>
+</body>
+</html>

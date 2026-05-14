@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Pricing — RetirementPlanner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{font-size:15px;}
+body{background:#0b0f17;font-family:"Manrope",sans-serif;color:#e8e4dc;min-height:100dvh;overflow-x:hidden;}
+
+/* background */
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(184,146,10,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(184,146,10,.035) 1px,transparent 1px);
+  background-size:52px 52px;}
+.blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(70px);animation:drift 22s ease-in-out infinite alternate;}
+.b1{width:500px;height:500px;background:radial-gradient(circle,rgba(184,146,10,.15),transparent 65%);top:-180px;right:-140px;}
+.b2{width:440px;height:440px;background:radial-gradient(circle,rgba(36,85,164,.18),transparent 65%);bottom:-140px;left:-120px;animation-delay:-9s;}
+.b3{width:360px;height:360px;background:radial-gradient(circle,rgba(26,122,82,.12),transparent 65%);top:38%;left:35%;animation-delay:-16s;}
+@keyframes drift{0%{transform:translate(0,0)scale(1);}100%{transform:translate(30px,24px)scale(1.07);}}
+
+/* nav */
+.l-nav{position:sticky;top:0;z-index:100;
+  height:calc(56px + env(safe-area-inset-top,0px));
+  padding-top:env(safe-area-inset-top,0px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding-left:20px;padding-right:20px;
+  background:rgba(11,15,23,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(184,146,10,.1);}
+.wordmark{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;}
+.wordmark-icon{width:30px;height:30px;border-radius:7px;flex-shrink:0;
+  background:linear-gradient(135deg,#b8920a,#e8b820);
+  display:flex;align-items:center;justify-content:center;}
+.wordmark-icon svg{display:block;}
+.wordmark-text{font-family:"Manrope",sans-serif;font-size:17px;font-weight:800;color:#f0ece0;letter-spacing:-.3px;}
+.wordmark-text span{color:#e8b820;}
+.nav-back{background:none;border:none;font-family:"Manrope",sans-serif;font-size:12px;
+  font-weight:600;color:rgba(220,210,185,.5);cursor:pointer;padding:6px 10px;
+  border-radius:7px;transition:all .15s;}
+.nav-back:hover{color:#f0ece0;background:rgba(255,255,255,.06);}
+
+.pr-hero{position:relative;z-index:1;padding:48px 20px 32px;text-align:center;max-width:600px;margin:0 auto;}
+.pr-eyebrow{display:inline-block;background:rgba(184,146,10,.1);border:1px solid rgba(184,146,10,.22);
+  border-radius:100px;padding:5px 16px;font-size:9.5px;font-weight:700;letter-spacing:1.6px;
+  text-transform:uppercase;color:#d4a820;margin-bottom:20px;}
+.pr-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,8vw,58px);font-weight:300;
+  line-height:1.08;color:#f0ece0;letter-spacing:-.3px;margin-bottom:14px;}
+.pr-h1 em{font-style:italic;color:#e8b820;}
+.pr-sub{font-size:14px;line-height:1.65;color:rgba(220,210,185,.45);margin-bottom:28px;}
+/* billing toggle */
+.pr-toggle-wrap{display:flex;align-items:center;justify-content:center;gap:10px;}
+.pr-tog-lbl{font-size:12px;font-weight:600;color:rgba(220,210,185,.6);transition:opacity .2s;}
+.pr-toggle{width:44px;height:24px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  border-radius:12px;cursor:pointer;position:relative;transition:all .2s;}
+.pr-toggle.annual{background:rgba(184,146,10,.3);border-color:rgba(184,146,10,.5);}
+.pr-toggle-thumb{width:18px;height:18px;background:#e8b820;border-radius:50%;
+  position:absolute;top:2px;left:2px;transition:transform .22s cubic-bezier(.34,1.56,.64,1);}
+.pr-toggle.annual .pr-toggle-thumb{transform:translateX(20px);}
+.pr-save-badge{background:rgba(46,204,142,.18);border:1px solid rgba(46,204,142,.3);
+  color:#2ecc8e;font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;
+  padding:3px 9px;border-radius:100px;transition:opacity .2s;}
+/* cards */
+.pr-cards-wrap{display:flex;gap:16px;padding:0 16px 32px;max-width:720px;margin:0 auto;
+  position:relative;z-index:1;}
+.pr-card{flex:1;border-radius:18px;padding:28px 24px 24px;position:relative;
+  display:flex;flex-direction:column;}
+.pr-free{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);}
+.pr-pro{background:linear-gradient(160deg,rgba(184,146,10,.1),rgba(184,146,10,.04),rgba(0,0,0,0));
+  border:1.5px solid rgba(184,146,10,.35);
+  box-shadow:0 0 0 1px rgba(184,146,10,.1),0 20px 60px rgba(0,0,0,.4);}
+.pr-popular{position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,#b8920a,#e8b820);color:#0b0f17;
+  font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;
+  padding:4px 14px;border-radius:100px;white-space:nowrap;}
+.pr-card-top{margin-bottom:20px;}
+.pr-tier{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(220,210,185,.4);margin-bottom:10px;}
+.pr-pro .pr-tier{color:rgba(232,184,32,.7);}
+.pr-price-wrap{display:flex;align-items:baseline;gap:4px;margin-bottom:8px;}
+.pr-price{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;
+  color:#f0ece0;line-height:1;}
+.pr-pro .pr-price{color:#e8b820;}
+.pr-per{font-size:13px;color:rgba(220,210,185,.4);font-weight:500;}
+.pr-annual-note{font-size:10px;color:rgba(46,204,142,.8);font-weight:600;margin-bottom:8px;}
+.pr-pitch{font-size:12.5px;line-height:1.6;color:rgba(220,210,185,.4);}
+.pr-pro .pr-pitch{color:rgba(220,210,185,.55);}
+/* feature list */
+.pr-feats{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:24px;flex:1;}
+.pr-feats li{font-size:12px;display:flex;align-items:flex-start;gap:8px;line-height:1.4;}
+.pr-feats li.inc{color:rgba(220,210,185,.7);}
+.pr-feats li.out{color:rgba(220,210,185,.22);}
+.pr-feats li::before{content:attr(data-icon);flex-shrink:0;font-size:11px;margin-top:1px;}
+.pr-feats li.inc::first-letter{color:#2ecc8e;}
+.pr-feats li.out::first-letter{color:rgba(220,210,185,.22);}
+/* buttons */
+.pr-btn{width:100%;padding:14px;border-radius:11px;font-family:'Manrope',sans-serif;
+  font-size:13px;font-weight:800;cursor:pointer;transition:all .18s;border:none;
+  letter-spacing:.2px;}
+.pr-btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:rgba(220,210,185,.6);}
+.pr-btn-ghost:hover{background:rgba(255,255,255,.1);color:#f0ece0;}
+.pr-btn-gold{background:linear-gradient(135deg,#b8920a,#e8b820);color:#0b0f17;
+  box-shadow:0 4px 20px rgba(184,146,10,.4);}
+.pr-btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(184,146,10,.55);}
+.pr-btn-gold:active{transform:scale(.97);}
+.pr-micro{font-size:9.5px;color:rgba(220,210,185,.25);text-align:center;margin-top:10px;}
+/* FAQ */
+.pr-faq-wrap{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:0 20px 40px;}
+.pr-faq-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;
+  color:#f0ece0;margin-bottom:16px;text-align:center;}
+.pr-faqs{display:flex;flex-direction:column;gap:10px;}
+.pr-faq{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:14px 16px;}
+.pr-faq-q{font-size:12.5px;font-weight:700;color:rgba(220,210,185,.75);margin-bottom:6px;}
+.pr-faq-a{font-size:11.5px;line-height:1.65;color:rgba(220,210,185,.38);}
+@media(max-width:600px){
+  .pr-cards-wrap{flex-direction:column;max-width:360px;}
+  .pr-card{padding:24px 18px 20px;}
+  .pr-price{font-size:40px;}
+  .pr-hero{padding:36px 18px 24px;}
+}
+
+
+@keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+
+<nav class="l-nav">
+  <div class="wordmark" onclick="window.location.href='index.html'">
+    <div class="wordmark-icon">
+      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="1,13 5,8 8,10 12,4 17,6" stroke="#0b0f17" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <line x1="1" y1="16" x2="17" y2="16" stroke="#0b0f17" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="wordmark-text">Retirement<span>Planner</span></div>
+  </div>
+  <button class="nav-back" onclick="window.location.href='index.html'">&#8592; Back to tools</button>
+</nav>
+
+<div class="pr-hero">
+  <div class="pr-eyebrow">Simple, transparent pricing</div>
+  <h1 class="pr-h1">One plan.<br><em>Everything included.</em></h1>
+  <p class="pr-sub">All 5 planning tools &middot; US &amp; India &middot; Cross-border retirement &middot; PDF exports &middot; No hidden fees</p>
+  <div class="pr-toggle-wrap">
+    <span class="pr-tog-lbl" id="tog-monthly-lbl">Monthly</span>
+    <button class="pr-toggle" id="billing-toggle" onclick="toggleBilling()" aria-label="Toggle billing period">
+      <div class="pr-toggle-thumb" id="toggle-thumb"></div>
+    </button>
+    <span class="pr-tog-lbl" id="tog-annual-lbl" style="opacity:.4">Annual</span>
+    <span class="pr-save-badge" id="save-badge" style="opacity:.4">Save 30%</span>
+  </div>
+</div>
+
+<div class="pr-cards-wrap">
+
+  <div class="pr-card pr-free">
+    <div class="pr-card-top">
+      <div class="pr-tier">Free</div>
+      <div class="pr-price-wrap">
+        <div class="pr-price">$0</div>
+        <div class="pr-per">forever</div>
+      </div>
+      <p class="pr-pitch">Get a feel for the tools. No credit card needed.</p>
+    </div>
+    <ul class="pr-feats">
+      <li class="inc">&#10003; US Financial Planning tool</li>
+      <li class="inc">&#10003; US Retirement Plan tool</li>
+      <li class="inc">&#10003; India Financial Planning tool</li>
+      <li class="out">&#8722; India Retirement tool</li>
+      <li class="out">&#8722; Retire in India cross-border tool</li>
+      <li class="out">&#8722; PDF export</li>
+      <li class="out">&#8722; Save &amp; restore your plan</li>
+    </ul>
+    <button class="pr-btn pr-btn-ghost" onclick="window.location.href='index.html'">Start for free</button>
+  </div>
+
+  <div class="pr-card pr-pro">
+    <div class="pr-popular">Most Popular</div>
+    <div class="pr-card-top">
+      <div class="pr-tier">Pro</div>
+      <div class="pr-price-wrap">
+        <div class="pr-price" id="pr-price-display">$5.99</div>
+        <div class="pr-per" id="pr-per-display">/ month</div>
+      </div>
+      <div class="pr-annual-note" id="pr-annual-note" style="display:none">
+        Billed as $49.99 / year &mdash; save $21.89
+      </div>
+      <p class="pr-pitch">Everything you need to model your complete retirement picture.</p>
+    </div>
+    <ul class="pr-feats">
+      <li class="inc">&#10003; All 5 planning tools</li>
+      <li class="inc">&#10003; US &amp; India tools (all four)</li>
+      <li class="inc">&#10003; Retire in India cross-border planner</li>
+      <li class="inc">&#10003; PDF export &mdash; all tools</li>
+      <li class="inc">&#10003; Save &amp; restore your plan</li>
+      <li class="inc">&#10003; Email support</li>
+      <li class="inc">&#10003; Early access to new tools</li>
+    </ul>
+    <button class="pr-btn pr-btn-gold" onclick="handleSubscribe()">
+      <span id="pr-cta-text">Get Pro &mdash; $5.99/mo</span>
+    </button>
+    <p class="pr-micro">Cancel anytime &middot; No contracts &middot; Instant access</p>
+  </div>
+
+</div>
+
+<div class="pr-faq-wrap">
+  <div class="pr-faq-title">Frequently asked</div>
+  <div class="pr-faqs">
+    <div class="pr-faq">
+      <div class="pr-faq-q">Is my data private?</div>
+      <div class="pr-faq-a">Yes. All calculations run entirely in your browser. No financial data is ever sent to our servers &mdash; we never see your numbers.</div>
+    </div>
+    <div class="pr-faq">
+      <div class="pr-faq-q">Can I cancel anytime?</div>
+      <div class="pr-faq-a">Absolutely. No contracts, no lock-in. Cancel from your account settings and your subscription ends at the current billing period.</div>
+    </div>
+    <div class="pr-faq">
+      <div class="pr-faq-q">Is this financial advice?</div>
+      <div class="pr-faq-a">No. RetirementPlanner is an educational tool for exploring scenarios and trade-offs. Always consult a licensed financial advisor before making investment decisions.</div>
+    </div>
+    <div class="pr-faq">
+      <div class="pr-faq-q">What payment methods do you accept?</div>
+      <div class="pr-faq-a">All major credit and debit cards (Visa, Mastercard, Amex), and Apple Pay &amp; Google Pay on supported devices. Payments processed securely by Stripe.</div>
+    </div>
+    <div class="pr-faq">
+      <div class="pr-faq-q">Will prices change?</div>
+      <div class="pr-faq-a">Current pricing is locked in for all active subscribers. If we ever change pricing, existing subscribers keep their current rate.</div>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;padding:0 20px calc(40px + env(safe-area-inset-bottom,0px));font-size:9.5px;color:rgba(220,210,185,.18);line-height:1.9">
+  <p>RetirementPlanner &middot; For educational purposes only &middot; Not financial advice</p>
+  <p>&copy; 2025 RetirementPlanner &middot; All rights reserved</p>
+</div>
+
+<script>
+var _billingAnnual = false;
+
+function toggleBilling(){
+  _billingAnnual = !_billingAnnual;
+  var toggle  = document.getElementById('billing-toggle');
+  var priceEl = document.getElementById('pr-price-display');
+  var perEl   = document.getElementById('pr-per-display');
+  var noteEl  = document.getElementById('pr-annual-note');
+  var ctaEl   = document.getElementById('pr-cta-text');
+  var mLbl    = document.getElementById('tog-monthly-lbl');
+  var aLbl    = document.getElementById('tog-annual-lbl');
+  var saveB   = document.getElementById('pr-save-badge');
+  if(_billingAnnual){
+    toggle.classList.add('annual');
+    priceEl.textContent='$4.17'; perEl.textContent='/ month';
+    if(noteEl) noteEl.style.display='block';
+    if(ctaEl)  ctaEl.textContent='Get Pro — $49.99/yr';
+    if(mLbl) mLbl.style.opacity='0.4';
+    if(aLbl) aLbl.style.opacity='1';
+    if(saveB) saveB.style.opacity='1';
+  } else {
+    toggle.classList.remove('annual');
+    priceEl.textContent='$5.99'; perEl.textContent='/ month';
+    if(noteEl) noteEl.style.display='none';
+    if(ctaEl)  ctaEl.textContent='Get Pro — $5.99/mo';
+    if(mLbl) mLbl.style.opacity='1';
+    if(aLbl) aLbl.style.opacity='0.4';
+    if(saveB) saveB.style.opacity='0.4';
+  }
+}
+
+function handleSubscribe(){
+  // Placeholder — wire up Stripe or payment backend here
+  alert('Payment integration coming soon! Thank you for your interest in RetirementPlanner Pro.');
+}
+</script>
+</body>
+</html>
