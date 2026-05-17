@@ -1,24 +1,105 @@
 {
-  "name": "RetirementPlanner",
+  "name": "RetirementPlanner \u2014 US & India",
   "short_name": "RetirePlanner",
-  "description": "Complete retirement planning for US & India — 401k, IRA, EPF, NPS, cross-border",
-  "start_url": "/index.html",
+  "description": "Complete retirement planning for US and India \u2014 financial planning, retirement income, and cross-border scenarios. Runs 100% in your browser. Private. No login.",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#0b0f17",
-  "theme_color": "#0b0f17",
-  "categories": ["finance", "productivity"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#060a14",
+  "theme_color": "#060a14",
+  "orientation": "any",
+  "lang": "en-US",
+  "categories": [
+    "finance",
+    "productivity"
+  ],
   "icons": [
-    { "src": "icons/icon-72.png",   "sizes": "72x72",   "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-96.png",   "sizes": "96x96",   "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-128.png",  "sizes": "128x128", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-144.png",  "sizes": "144x144", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-152.png",  "sizes": "152x152", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-192.png",  "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-384.png",  "sizes": "384x384", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-512.png",  "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    {
+      "src": "logo-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "logo-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "logo-maskable-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
   ],
   "screenshots": [
-    { "src": "icons/screenshot-mobile.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow" }
-  ]
+    {
+      "src": "og-image.svg",
+      "sizes": "1200x630",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "RetirementPlanner dashboard"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Financial Planning (US)",
+      "short_name": "FP US",
+      "description": "Open US Financial Planning tool",
+      "url": "./index.html#fp",
+      "icons": [
+        {
+          "src": "logo-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Retirement Plan (US)",
+      "short_name": "Retire US",
+      "description": "Open US Retirement Plan tool",
+      "url": "./index.html#ret",
+      "icons": [
+        {
+          "src": "logo-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "India Financial Planning",
+      "short_name": "FP India",
+      "description": "Open India Financial Planning tool",
+      "url": "./index.html#infp",
+      "icons": [
+        {
+          "src": "logo-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Retire in India",
+      "short_name": "Retire IN",
+      "description": "Cross-border US\u2192India retirement",
+      "url": "./index.html#xb",
+      "icons": [
+        {
+          "src": "logo-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": []
 }
