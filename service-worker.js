@@ -13,6 +13,8 @@ const PRECACHE_ASSETS = [
   './pricing.html',
   './manifest.json',
   './logo-192.svg',
+  './logo-192.png',
+  './logo-512.png',
   './logo-512.svg',
   './logo-maskable-512.svg',
   './favicon-32.svg',
