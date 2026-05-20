@@ -9,8 +9,8 @@
     "standalone",
     "minimal-ui"
   ],
-  "background_color": "#060a14",
-  "theme_color": "#060a14",
+  "background_color": "#05080f",
+  "theme_color": "#0a0e1a",
   "orientation": "any",
   "lang": "en-US",
   "categories": [
@@ -31,7 +31,7 @@
       "purpose": "any"
     },
     {
-      "src": "logo-maskable-512.svg",
+      "src": "logo-512.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "maskable"

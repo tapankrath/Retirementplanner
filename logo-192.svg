@@ -1,19 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0d1524"/>
-      <stop offset="100%" stop-color="#060a14"/>
+      <stop offset="0%" stop-color="#0a0e1a"/><stop offset="100%" stop-color="#051428"/>
     </linearGradient>
-    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#2563eb"/>
-      <stop offset="100%" stop-color="#60a5fa"/>
+    <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a70e0"/><stop offset="100%" stop-color="#5aacff"/>
     </linearGradient>
   </defs>
-  <rect width="192" height="192" rx="36" fill="url(#bg)"/>
-  <path d="M30,130 L60,93 L86,104 L118,62 L150,74 L162,70 L162,138 L30,138 Z"
-        fill="rgba(59,130,246,.12)"/>
-  <polyline points="30,130 60,93 86,104 118,62 150,74 162,70"
-            stroke="url(#line)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <circle cx="118" cy="62" r="5" fill="#60a5fa"/>
-  <line x1="26" y1="142" x2="166" y2="142" stroke="rgba(99,155,255,.4)" stroke-width="3" stroke-linecap="round"/>
+  <rect width="192" height="192" rx="42" fill="url(#bg)"/>
+  <rect width="192" height="192" rx="42" fill="none" stroke="rgba(90,172,255,.3)" stroke-width="2"/>
+  <path d="M28,148 L60,96 L88,112 L120,62 L152,78 L164,68 L164,150 L28,150 Z"
+        fill="rgba(90,172,255,.12)"/>
+  <polyline points="28,148 60,96 88,112 120,62 152,78 164,68"
+            stroke="url(#ln)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="120" cy="62" r="8" fill="#1a70e0" opacity=".8"/>
+  <circle cx="120" cy="62" r="4" fill="#5aacff"/>
+  <line x1="22" y1="154" x2="170" y2="154" stroke="rgba(90,172,255,.5)" stroke-width="4" stroke-linecap="round"/>
 </svg>
