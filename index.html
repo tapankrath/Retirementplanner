@@ -9,6 +9,318 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
+
+/* ===== TAPAN THEME OVERRIDE: BOLD + BRIGHT ===== */
+:root {
+  /* BACKGROUNDS: crisp black-on-white vibes */
+  --bg:      #05080f !important;
+  --panel:   #080c18 !important;
+  --surf:    #0c1220 !important;
+  --surface: #0c1220 !important;
+  --surf2:   #121a2d !important;
+  --surf3:   #192338 !important;
+  --surf4:   #1e2a42 !important;
+  --border:  rgba(0,240,136,.30) !important;
+  --border2: rgba(0,240,136,.45) !important;
+  /* TEXT: pure white, super readable */
+  --ink:     #ffffff !important;
+  --ink2:    #e0f0ff !important;
+  --text:    #ffffff !important;
+  --label:   #d0e8ff !important;
+  --muted:   #a0c8f0 !important;
+  /* ACCENTS: vivid green primary, yellow secondary */
+  --gold:    #00f088 !important;
+  --gold2:   #00d870 !important;
+  --accent:  #00f088 !important;
+  --blue:    #00f088 !important;
+  --blue2:   #00d870 !important;
+  --green:   #00f088 !important;
+  --green2:  #00d060 !important;
+  --yellow:  #ffe040 !important;
+  --red:     #ff4d6a !important;
+  --saffron: #ff9a00 !important;
+  --saffron2:#ffbe50 !important;
+  --teal:    #00f0d8 !important;
+}
+
+/* ===== FONT WEIGHT BOOST ===== */
+body, input, button, select, textarea {
+  font-weight: 500 !important;
+}
+/* boost all small/light text */
+.sg-n, .sg-hint, .dc .dl, .dc .ds, .hc-why, .tb-note,
+.l-met-n, .l-met-s, .l-disc-text, .l-disc-meta,
+.c-desc, .c-feats li, .leg span, .l-sub, .l-footer,
+.hdr p, .ph-row td, .l-tag, .l-disc-meta {
+  font-weight: 600 !important;
+  color: #d0e8ff !important;
+}
+/* section group labels */
+.sg-lbl, .sg-label, .sbox-title, .s-title, .sec-lbl {
+  font-weight: 900 !important;
+  letter-spacing: 1.2px !important;
+}
+/* value readouts */
+.sg-v, .dv, .vl, .fx-rate, .l-met-v {
+  font-weight: 800 !important;
+}
+/* headers */
+.hdr h1, .ch-title, .tb-title {
+  font-weight: 700 !important;
+}
+/* Cormorant headings — bump weight */
+[style*="Cormorant"], .c-title {
+  font-weight: 600 !important;
+}
+
+/* ===== LABELS: bright white ===== */
+.m-lbl, .married-label, label, .n-lbl,
+.row > span:first-child, .ninp-label {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+}
+
+/* ===== INPUTS: crisp, visible ===== */
+input[type=number], input[type=text], input[type=email],
+select, .ninp {
+  background: #111827 !important;
+  border: 1.5px solid rgba(0,240,136,.50) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  border-radius: 8px !important;
+}
+input[type=number]:focus, input[type=text]:focus,
+input[type=email]:focus, select:focus, .ninp:focus {
+  border-color: #ffe040 !important;
+  box-shadow: 0 0 0 3px rgba(255,224,64,.20) !important;
+  outline: none !important;
+}
+/* slider thumb */
+input[type=range] {
+  accent-color: #00f088 !important;
+}
+
+/* ===== TOGGLE BUTTONS ===== */
+.tb, .toggle-btn {
+  border: 1.5px solid rgba(0,240,136,.40) !important;
+  color: #a0d8b0 !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+}
+.tb.on, .toggle-btn.on {
+  background: #00f088 !important;
+  border-color: #00f088 !important;
+  color: #04080f !important;
+  font-weight: 800 !important;
+}
+
+/* ===== RISK BUTTONS ===== */
+.risk-btn {
+  border: 1.5px solid rgba(0,240,136,.35) !important;
+  color: #c0e0d0 !important;
+  font-weight: 700 !important;
+}
+.risk-btn.on {
+  border-color: #00f088 !important;
+  box-shadow: 0 0 0 3px rgba(0,240,136,.20) !important;
+  background: rgba(0,240,136,.12) !important;
+  color: #00f088 !important;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.pdf-btn, .hdr-back {
+  font-weight: 700 !important;
+  font-size: 12.5px !important;
+}
+.hdr-back {
+  border: 1.5px solid rgba(0,240,136,.40) !important;
+  color: #00f088 !important;
+}
+.hdr-back:hover {
+  background: rgba(0,240,136,.15) !important;
+  color: #ffe040 !important;
+  border-color: #ffe040 !important;
+}
+.pdf-btn {
+  background: rgba(0,240,136,.18) !important;
+  border: 1.5px solid rgba(0,240,136,.55) !important;
+  color: #00f088 !important;
+}
+.pdf-btn:hover {
+  background: rgba(0,240,136,.28) !important;
+}
+
+/* ===== DATA CARDS (dc) ===== */
+.dc {
+  border: 1px solid rgba(0,240,136,.30) !important;
+}
+.dc .dl {
+  color: #90c8b0 !important;
+  font-weight: 700 !important;
+  font-size: 10px !important;
+  letter-spacing: 0.8px !important;
+}
+.dc .dv {
+  font-size: 23px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+}
+.dc.gold .dv  { color: #00f088 !important; }
+.dc.grn .dv   { color: #00f088 !important; }
+.dc.blu .dv   { color: #40d0ff !important; }
+.dc.saf .dv   { color: #ff9a00 !important; }
+.dc.tel .dv   { color: #00f0d8 !important; }
+.dc.red .dv   { color: #ff5570 !important; }
+
+/* ===== TABLES ===== */
+thead th {
+  font-weight: 800 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.5px !important;
+}
+tbody td {
+  font-weight: 600 !important;
+  font-size: 11.5px !important;
+  color: #d8ecff !important;
+}
+tbody td:first-child {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 12.5px !important;
+}
+.pos { color: #00f088 !important; font-weight: 800 !important; }
+.neg { color: #ff5570 !important; font-weight: 700 !important; }
+
+/* ===== LANDING PAGE - index.html overrides ===== */
+.l-hero h1 {
+  font-size: clamp(38px, 9vw, 66px) !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+}
+.l-hero h1 em {
+  color: #00f088 !important;
+  text-shadow: 0 0 40px rgba(0,240,136,.5) !important;
+}
+.l-sub {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #d0e8ff !important;
+}
+.l-pill {
+  background: rgba(0,240,136,.18) !important;
+  border-color: rgba(0,240,136,.60) !important;
+  color: #00f088 !important;
+  font-weight: 800 !important;
+}
+.l-dot {
+  background: #00f088 !important;
+  box-shadow: 0 0 10px rgba(0,240,136,1) !important;
+}
+.ctab {
+  font-weight: 700 !important;
+  font-size: 15px !important;
+}
+.ctab.on {
+  color: #ffffff !important;
+  background: rgba(0,240,136,.18) !important;
+  border: 1px solid rgba(0,240,136,.50) !important;
+}
+.l-card {
+  border: 1.5px solid rgba(0,240,136,.35) !important;
+}
+.c-title {
+  font-size: 27px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+}
+.c-desc {
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+  color: #d0e8ff !important;
+  font-weight: 600 !important;
+}
+.c-feats li {
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  color: #c8e0ff !important;
+}
+.c-cta {
+  font-size: 13.5px !important;
+  font-weight: 800 !important;
+}
+.c-fp  .c-cta { background:rgba(0,240,136,.22) !important; border-color:rgba(0,240,136,.60) !important; color:#00f088 !important; }
+.c-ret .c-cta { background:rgba(0,240,136,.14) !important; border-color:rgba(0,240,136,.40) !important; color:#00d878 !important; }
+.c-in  .c-cta { background:rgba(255,154,0,.22) !important; border-color:rgba(255,154,0,.60) !important; color:#ff9a00 !important; }
+.c-xb  .c-cta { background:rgba(0,240,216,.14) !important; border-color:rgba(0,240,216,.40) !important; color:#00f0d8 !important; }
+.l-met-v {
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  color: #00f088 !important;
+}
+.l-met-n {
+  font-weight: 700 !important;
+  font-size: 10.5px !important;
+  color: #90c8b0 !important;
+}
+
+/* ===== MOBILE IMPROVEMENTS ===== */
+@media (max-width: 768px) {
+  /* larger touch targets */
+  input[type=number], input[type=text], select, .ninp {
+    font-size: 16px !important; /* prevent iOS zoom */
+    padding: 12px 14px !important;
+    min-height: 48px !important;
+  }
+  input[type=range] {
+    height: 6px !important;
+  }
+  .tb, .toggle-btn, .risk-btn {
+    min-height: 44px !important;
+    font-size: 13px !important;
+    padding: 10px 16px !important;
+  }
+  .pdf-btn, .hdr-back {
+    min-height: 44px !important;
+    padding: 10px 18px !important;
+    font-size: 13px !important;
+  }
+  .dc .dv {
+    font-size: 20px !important;
+  }
+  .dc .dl {
+    font-size: 9px !important;
+  }
+  /* section group numbers bigger */
+  .sg-v {
+    font-size: 15px !important;
+  }
+  .sg-n {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+  }
+  /* tables scroll, don't wrap */
+  .tb-box, .ch-box {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  table {
+    min-width: 520px !important;
+  }
+  /* header height for notch */
+  .hdr {
+    padding: 0 16px !important;
+  }
+}
+
+/* nav "Get Started" button - green instead of blue */
+.l-nav button[style*="linear-gradient(135deg,#2563eb"] {
+  background: linear-gradient(135deg,#00b060,#00f088,#a0ffc8) !important;
+  color: #04080f !important;
+}
+/* ===== END THEME ===== */
+
 /* ── ROUTING ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;}
@@ -579,7 +891,7 @@ thead th{position:sticky;top:0;z-index:2;}
 .hdr::after{content:'';position:absolute;top:-80px;right:60px;width:280px;height:280px;
   background:radial-gradient(circle,rgba(91,156,246,.16),transparent 65%);pointer-events:none;}
 .hdr-inner{position:relative;z-index:1;}
-.hdr h1{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:#ffffff;}
+.hdr h1{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#ffffff;}
 .hdr h1 em{font-style:italic;color:#60a5fa;text-shadow:0 0 30px rgba(96,165,250,.35);}
 .hdr h1 .sep{color:rgba(255,255,255,.3);margin:0 8px;}
 .hdr p{font-size:11.5px;color:rgba(180,215,255,.85);margin-top:3px;letter-spacing:.3px;}
@@ -894,7 +1206,7 @@ tbody td.roth-col{text-align:right;}
 .hdr-inner{position:relative;z-index:1;display:flex;align-items:center;gap:14px;}
 .hdr-mark{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gold2));
   display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.hdr h1{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;color:#f0f0f0;letter-spacing:.2px;}
+.hdr h1{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#f0f0f0;letter-spacing:.2px;}
 .hdr h1 em{font-style:italic;color:var(--gold2);}
 .hdr p{font-size:10px;color:rgba(220,210,185,.45);margin-top:1px;letter-spacing:.4px;}
 .hdr-right{margin-left:auto;position:relative;z-index:1;display:flex;align-items:center;gap:10px;}
@@ -1244,7 +1556,7 @@ self.addEventListener('fetch', e => {
   function showIosInstructions(){
     var d = document.createElement('div');
     d.style.cssText = 'position:fixed;inset:0;z-index:9999999;background:rgba(0,0,0,.75);display:flex;align-items:flex-end;justify-content:center;';
-    d.innerHTML = '<div style="background:#0d1524;border:1.5px solid rgba(59,130,246,.3);border-radius:20px 20px 0 0;padding:24px 24px calc(24px + env(safe-area-inset-bottom,0px));max-width:500px;width:100%;font-family:Manrope,sans-serif;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><span style="font-family:Cormorant Garamond,serif;font-size:20px;font-weight:300;color:#eef2ff">Install on iPhone / iPad</span><button onclick="this.closest('div[style]').parentNode.remove()" style="background:rgba(59,130,246,.15);border:none;border-radius:8px;color:#60a5fa;font-size:18px;cursor:pointer;padding:4px 10px;">×</button></div><ol style="color:rgba(140,180,240,.8);font-size:13px;line-height:2;padding-left:20px;"><li>Tap the <strong style='color:#60a5fa'>Share</strong> button <span style='font-size:16px'>⎋</span> at the bottom of Safari</li><li>Scroll down and tap <strong style='color:#60a5fa'>"Add to Home Screen"</strong></li><li>Tap <strong style='color:#60a5fa'>"Add"</strong> in the top right corner</li></ol><div style="margin-top:14px;padding:10px 14px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:10px;font-size:11px;color:rgba(120,165,230,.6);">Works on Chrome for Android: tap ⋮ → "Add to Home Screen"</div></div>';
+    d.innerHTML = '<div style="background:#0d1524;border:1.5px solid rgba(59,130,246,.3);border-radius:20px 20px 0 0;padding:24px 24px calc(24px + env(safe-area-inset-bottom,0px));max-width:500px;width:100%;font-family:Manrope,sans-serif;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><span style="font-family:Cormorant Garamond,serif;font-size:20px;font-weight:700;color:#eef2ff">Install on iPhone / iPad</span><button onclick="this.closest('div[style]').parentNode.remove()" style="background:rgba(59,130,246,.15);border:none;border-radius:8px;color:#60a5fa;font-size:18px;cursor:pointer;padding:4px 10px;">×</button></div><ol style="color:rgba(140,180,240,.8);font-size:13px;line-height:2;padding-left:20px;"><li>Tap the <strong style='color:#60a5fa'>Share</strong> button <span style='font-size:16px'>⎋</span> at the bottom of Safari</li><li>Scroll down and tap <strong style='color:#60a5fa'>"Add to Home Screen"</strong></li><li>Tap <strong style='color:#60a5fa'>"Add"</strong> in the top right corner</li></ol><div style="margin-top:14px;padding:10px 14px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:10px;font-size:11px;color:rgba(120,165,230,.6);">Works on Chrome for Android: tap ⋮ → "Add to Home Screen"</div></div>';
     document.body.appendChild(d);
   }
 
