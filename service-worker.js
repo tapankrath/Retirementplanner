@@ -1,5 +1,5 @@
 // RetirementPlanner Service Worker v2
-const CACHE_NAME = 'retire-planner-v2';
+const CACHE_NAME = 'retire-planner-v3';
 
 // All app files to cache on install
 const PRECACHE_ASSETS = [

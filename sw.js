@@ -1,5 +1,5 @@
 // RetirementPlanner Service Worker v1.0
-const CACHE = 'retirementplanner-v1';
+const CACHE = 'retirementplanner-v2';
 
 const CORE_FILES = [
   '/index.html',
