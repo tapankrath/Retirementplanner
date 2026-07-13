@@ -744,10 +744,6 @@ tbody td:first-child { color: #0e1a2e !important; }
     var b=new Blob([JSON.stringify(m)],{type:'application/manifest+json'});
     var el=document.getElementById(mid);
     if(el) el.href=URL.createObjectURL(b);
-    if('serviceWorker' in navigator){
-      var sw='const CACHE="rp-v2";self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll([self.location.pathname])).then(()=>self.skipWaiting()))});self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;e.respondWith(caches.match(e.request).then(c=>{if(c)return c;return fetch(e.request).then(r=>{if(r&&r.status===200&&r.type==="basic"){var cl=r.clone();caches.open(CACHE).then(ca=>ca.put(e.request,cl))}return r}).catch(()=>c)}))});';
-      try{navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'})),{scope:'./'});}catch(e){}
-    }
   })();
   </script>
 </head>
@@ -987,6 +983,12 @@ function handleSubscribe() {
 // ── FAQ accordion ─────────────────────────────────────────────────────────────
 function toggleFaq(el) {
   el.classList.toggle('open');
+}
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('service-worker.js',{scope:'./'}).catch(function(){});
+  });
 }
 </script>
 </body>
